@@ -6,8 +6,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import { useState } from "react";
-import { useSelector } from "react-redux";
-import { IState, IValute } from "../../types";
+import { IValute } from "../../types";
 import { ReactComponent as DoubleArrowsSVG } from "./assets/double-arrow.svg";
 import Different from "../Different";
 const useStyles = makeStyles({
@@ -18,6 +17,7 @@ const useStyles = makeStyles({
     borderRadius: 7,
     paddingLeft: "1rem",
     paddingRight: "1rem",
+    boxShadow: "0px 10px 10px rgba(0,0,0,0.2)",
     "@media (max-width: 600px)": {
       width: "75vw",
     },
@@ -60,9 +60,8 @@ const useStyles = makeStyles({
   },
 });
 function perRuble(val: number, nominal: number) {
-  const convertToRuble = (1 * nominal) / val;
+  const convertToRuble = nominal / val;
   const rubleNominal = calcNominal(convertToRuble);
-
   return [(convertToRuble * rubleNominal).toFixed(4), rubleNominal];
 }
 function calcNominal(val: number) {
@@ -72,10 +71,6 @@ function calcNominal(val: number) {
 }
 
 const CurrencyCard = ({ valute }: { valute: IValute }) => {
-  const state = useSelector<IState, IState["toolkit"]>(
-    (state) => state.toolkit
-  );
-
   const classes = useStyles();
   const [rubMain, setRubMain] = useState(false);
   const handleClickArrows = () => setRubMain((prev) => !prev);
@@ -83,11 +78,7 @@ const CurrencyCard = ({ valute }: { valute: IValute }) => {
   return (
     <Card className={classes.root}>
       <CardContent>
-        <Typography
-          className={classes.title}
-          color="textSecondary"
-          gutterBottom
-        >
+        <Typography className={classes.title} color="textSecondary">
           {valute.Name}
         </Typography>
         <div className={classes.lineWrap}>

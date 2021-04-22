@@ -4,15 +4,23 @@ import "./App.css";
 import { IState, PageEnum } from "./types";
 import { useDispatch, useSelector } from "react-redux";
 import { endLoading, errorLoading, setData, startLoading } from "./redux/slice";
-import { AppBar, Tab, Tabs } from "@material-ui/core";
+import { AppBar, makeStyles, Tab, Tabs } from "@material-ui/core";
 import TabPanel from "./components/TabPanel";
 import CurrenciesTab from "./components/CurrenciesTab";
+import ConverterTab from "./components/ConverterTab";
+
+const useStyles = makeStyles({
+  indicator: {
+    backgroundColor: "white",
+  },
+});
 
 function App() {
   const [page, setPage] = useState<PageEnum>(PageEnum.currencies);
   const state = useSelector<IState, IState["toolkit"]>(
     (state) => state.toolkit
   );
+
   const dispatch = useDispatch();
   const loadData = () => {
     dispatch(startLoading());
@@ -20,7 +28,6 @@ function App() {
       .then((data) => {
         dispatch(endLoading());
         dispatch(setData(data));
-        console.log("###", data);
       })
       .catch(() => dispatch(errorLoading()));
   };
@@ -28,16 +35,22 @@ function App() {
     loadData();
   }, []);
   useEffect(() => {
-    !state.isLoading && loadData();
+    if (!state.isLoading) {
+      loadData();
+    }
   }, [state.repeatLoading]);
-  console.log(state);
   const handleChange = (event: React.ChangeEvent<{}>, value: number) => {
     setPage(value);
   };
+  const classes = useStyles();
   return (
     <div className="App">
       <AppBar position="fixed">
-        <Tabs value={page} onChange={handleChange}>
+        <Tabs
+          value={page}
+          onChange={handleChange}
+          classes={{ indicator: classes.indicator }}
+        >
           <Tab label="Список валют" />
           <Tab label="Конвертер" />
         </Tabs>
@@ -46,7 +59,7 @@ function App() {
         <CurrenciesTab />
       </TabPanel>
       <TabPanel value={page} index={PageEnum.converter}>
-        Item Two
+        <ConverterTab />
       </TabPanel>
     </div>
   );
