@@ -36,6 +36,10 @@ const useStyles = makeStyles({
     fontSize: "3rem",
     padding: "0 1rem",
     cursor: "pointer",
+    "@media (max-width: 600px)": {
+      transform: "rotate(90deg)",
+      fontSize: "2rem",
+    },
   },
   lineWrap: {
     display: "flex",
@@ -43,6 +47,7 @@ const useStyles = makeStyles({
     alignItems: "center",
     "@media (max-width: 600px)": {
       flexDirection: "column",
+      justifyContent: "flex-start",
       alignItems: "flex-start",
     },
   },
@@ -52,11 +57,18 @@ const useStyles = makeStyles({
     alignItems: "center",
     "@media (max-width: 600px)": {
       flexDirection: "column",
+      justifyContent: "flex-start",
+      alignItems: "flex-start",
     },
   },
   mainValute: {
     display: "flex",
     alignItems: "center",
+    "@media (max-width: 600px)": {
+      flexDirection: "column",
+      justifyContent: "flex-start",
+      alignItems: "flex-start",
+    },
   },
 });
 function perRuble(val: number, nominal: number) {

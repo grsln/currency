@@ -42,6 +42,9 @@ const useStyles = makeStyles({
     "&:hover": {
       boxShadow: "0px 10px 10px rgba(0,0,0,0.2)",
     },
+    "@media (max-width: 600px)": {
+      transform: "rotate(90deg)",
+    },
   },
   lineWrap: {
     display: "flex",
@@ -98,20 +101,19 @@ const ConverterTab = () => {
     setSecondValute({ ...buf });
     setInputValue(valueExch.toFixed(4));
   };
+
+  const findValute = (id: string) =>
+    state.data.valute.find((item) => item.ID === id);
   const handleChangeFirstSelector = (
     event: React.ChangeEvent<{ value: unknown }>
   ) => {
-    const selectedValute = state.data.valute.find(
-      (item) => item.ID === event.target.value
-    );
+    const selectedValute = findValute(event.target.value as string);
     selectedValute && setFirstValute({ ...selectedValute });
   };
   const handleChangeSecondSelector = (
     event: React.ChangeEvent<{ value: unknown }>
   ) => {
-    const selectedValute = state.data.valute.find(
-      (item) => item.ID === event.target.value
-    );
+    const selectedValute = findValute(event.target.value as string);
     selectedValute && setSecondValute({ ...selectedValute });
   };
   const handleChangeinputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
